@@ -1,22 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StatusBar } from "react-native";
+import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold, Inter_900Black } from '@expo-google-fonts/inter';
 
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
+import { Home } from "./src/screens/Home";
+import { Background } from "./src/components/Background";
+import { Loading } from "./src/components/Loading";
 
 export default function App() {
-  const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
+    const [fontsLoaded] = useFonts({
+      Inter_400Regular, 
+      Inter_600SemiBold, 
+      Inter_700Bold, 
+      Inter_900Black
+    });
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
+
     return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </SafeAreaProvider>
+      <Background>
+        <StatusBar 
+          barStyle="light-content"
+          backgroundColor="transparent"
+          translucent
+        />
+        { fontsLoaded ? <Home/> : <Loading/> }
+
+      </Background>
     );
-  }
 }
